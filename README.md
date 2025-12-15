@@ -1,6 +1,6 @@
 # **💻 Pass-the-Hash (PtH) Attack on Microsoft's Active Directory Project**
 
-Completed on **December 10th, 2025 by Daniel Rusev and Hamza Khan at Lewis University.**
+Completed on **December 10th, 2025 by Daniel Rusev and Hamza Khan. This was a senior capstone project completed at Lewis University, Romeoville IL.**
 
 ---
 
@@ -8,7 +8,7 @@ Completed on **December 10th, 2025 by Daniel Rusev and Hamza Khan at Lewis Unive
 
 This project provides a comprehensive environment for researching, simulating, and implementing detection and mitigation strategies for the **Pass-the-Hash (PtH)** cyber attack technique.
 
-Download each raw file to view our research paper, product guides, test cases, and detection rules.
+Download each raw file to view our research paper, product guides, test cases, and detection rules. All documents related to this project are located in the **"Documents"** folder.
 
 Access each virtual machine from this Google Drive folder: https://drive.google.com/drive/folders/1QiYBwUZLx4K1A0UExDywyMWPq3jcKz2z?usp=sharing
 
@@ -24,4 +24,4 @@ The project is structured around four virtual machines (VMs) and corresponding g
 
 **Follow each product guide for test environment setup, attack simulation, and detection pipeline and mitigation practices implementation.**
 
-All product guides are located on a Microsoft Word document named **"Pass-the-Hash Product Guides"**.
+All product guides are located on a Microsoft Word document named **"Pass-the-Hash Product Guides"**. 
