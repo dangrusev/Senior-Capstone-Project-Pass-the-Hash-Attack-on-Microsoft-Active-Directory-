@@ -1,0 +1,141 @@
+<group name="Senior Capstone Detection Pipeline">
+
+<!-- The first nine rules are directly related to detecting known low-level to medium-level behaviors that could indicate that a Pass-the-Hash attack is occurring. -->
+
+    <rule id="100000" level="12">
+        <if_sid>92046</if_sid>
+        <field name="win.eventdata.image" type="pcre2">(?i)cmd\.EXE</field>
+        <field name="win.eventdata.parentImage" type="pcre2">(?i)fodhelper\.EXE</field>
+        <description>Use of fodhelper.exe has been detected. UAC may have been bypassed.</description>
+        <mitre>
+            <id>T1548.002</id>
+        </mitre>
+    </rule>
+
+    <rule id="100001" level="3">
+    	<if_sid>92068</if_sid>
+    	<field name="win.eventdata.image" type="pcre2">(?i)powershell\.EXE</field>
+        <field name="win.eventdata.parentCommandLine" type="pcre2">(?i)PSEXESVC\.EXE</field>
+        <description>The Windows Server 2019's PowerShell was opened using PsExec.</description>
+        <mitre>
+            <id>T1569.002</id>
+        </mitre>
+    </rule>
+
+    <rule id="100002" level="14">
+        <if_sid>92068</if_sid>
+        <field name="win.eventdata.commandLine" type="pcre2">(?i)ntds\.dit</field>
+	<field name="win.eventdata.commandLine" type="pcre2">(?i)SystemHiveFilePath</field>
+        <description>Potential extraction attempt of the NTDS.dit file and the SYSTEM HIVE file!</description>
+        <mitre>
+            <id>T1569.002</id>
+        </mitre>
+    </rule>
+
+    <rule id="100003" level="6">
+    	<if_sid>92652</if_sid>
+    	<field name="win.eventdata.authenticationPackageName" type="pcre2">NTLM</field>
+	<field name="win.system.eventID" type="pcre2">4624</field>
+    	<description>Successful remote authentication to the Windows 2019 Server detected using NTLM hash.</description>
+    	<mitre>
+      	    <id>T1550.002</id>
+            <id>T1078.002</id>
+        </mitre>
+    </rule>
+
+    <rule id="100004" level="14">
+        <if_sid>92900</if_sid>
+        <field name="win.eventdata.targetImage" type="pcre2">(?i)lsass\.EXE</field>
+        <field name="win.eventdata.sourceImage" type="pcre2">(?i)powershell\.EXE</field>
+        <description>LSASS.exe process has been abnormally opened. Possible credential extraction taking place!</description>
+        <mitre>
+            <id>T1003.001</id>
+        </mitre>
+    </rule>
+
+    <rule id="100005" level="6">
+        <if_sid>92110</if_sid>
+        <field name="win.eventdata.destinationPort" type="pcre2">^5985$</field>
+	<field name="win.eventdata.destinationIp" type="pcre2">^192.168.56.10$</field>
+        <description>$(win.eventdata.sourceIp) has remotley connected to $(win.eventdata.destinationIp).</description>
+        <mitre>
+            <id>T1021.006</id>
+        </mitre>
+    </rule>
+    
+    <rule id="100006" level="14">
+        <if_sid>92213</if_sid>
+    	<field name="win.eventdata.targetFilename" type="pcre2">(?i)C:\\\\Users\\\\Hamza\\\\AppData\\\\Local\\\\Temp\\\\__PSScriptPolicyTest_.*\.ps1</field>
+    	<description>A malicious file has been detected to be executed on a user's temp folder!</description>
+    	<mitre>
+      	    <id>T1105</id>
+        </mitre>
+    </rule>
+
+    <rule id="100007" level="3">
+        <if_sid>92039</if_sid>
+        <field name="win.eventdata.image" type="pcre2">(?i)net\.EXE</field>
+	    <field name="win.eventdata.commandLine" type="pcre2">(?i)user</field>
+        <description>The command "net user" was detected to be ran in a command line. Possible attempt to discover the user's privileges. </description>
+        <mitre>
+            <id>T1087.001</id>
+        </mitre>
+    </rule>
+    
+    <rule id="100008" level="6">
+	    <if_sid>92052</if_sid>
+	    <field name="win.eventdata.image" type="pcre2">(?i)cmd\.EXE</field>
+    	<field name="win.eventdata.parentImage" type="pcre2">(?i)payload\.EXE</field>
+	    <description>Command Prompt has been abnormally opened by another process, possibly caused by a malicious file.</description>
+	    <mitre>
+	        <id>T1059.003</id>
+	    </mitre>
+    </rule> 
+
+<!-- The next four rules are directly related to detecting the chaining of these low-level to medium-level behaviors that indicates that a Pass-the-Hash attack is currently occurring. -->
+
+    <rule id="100009" level="15" timeframe="1800">        
+        <if_matched_sid>100000</if_matched_sid>
+        <if_matched_sid>100007</if_matched_sid>
+	    <if_matched_sid>100004</if_matched_sid>
+        <description>UAC has been bypassed and LSASS.exe process has been executed at the same time! Credential harvesting is occurring! Please act immediately!</description>
+        <mitre>
+            <id>T1087</id>
+            <id>T1003.001</id>
+            <id>T1548.002</id>
+        </mitre>
+    </rule>
+
+    
+    <rule id="100010" level="15" timeframe="1800">
+        <if_matched_sid>100003</if_matched_sid>
+        <if_matched_sid>100005</if_matched_sid>
+        <description>Remote authentication using a NTLM hash been detected! A malicious actor has remote access to the Domain Controller! Please act immediately!</description>
+        <mitre>
+            <id>T1021.006</id>
+            <id>T1550.002</id>
+            <id>T1078.002</id>
+        </mitre>
+    </rule>
+    
+    <rule id="100011" level="15" timeframe="1800">
+        <if_matched_sid>100001</if_matched_sid>
+        <if_matched_sid>100002</if_matched_sid>
+        <description>A malicious actor is attempting to use PsExec to compromise the Domain Controller! Please act immediately!</description>
+        <mitre>
+            <id>T1569.002</id>
+            <id>T1003.003</id>
+        </mitre>
+    </rule>
+    
+    <rule id="100012" level="15" timeframe="1800">
+        <if_matched_sid>100008</if_matched_sid>
+        <if_matched_sid>100006</if_matched_sid>
+        <description>A process has opened up the Command Prompt, and executed a malicious file on a user's temp folder! Please act immediately!</description>
+        <mitre>
+            <id>T1059.003</id>
+            <id>T1105</id>
+        </mitre>
+    </rule>
+        
+</group>
