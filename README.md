@@ -8,7 +8,9 @@ Completed on **December 10th, 2025 by Daniel Rusev and Hamza Khan at Lewis Unive
 
 This project provides a comprehensive environment for researching, simulating, and implementing detection and mitigation strategies for the **Pass-the-Hash (PtH)** cyber attack technique.
 
-Download each raw file to view our research paper, product guides, test cases, detection rules, and test environment virtual machines.
+Download each raw file to view our research paper, product guides, test cases, and detection rules.
+
+Access each virtual machine from this Google Drive folder: https://drive.google.com/drive/folders/1QiYBwUZLx4K1A0UExDywyMWPq3jcKz2z?usp=sharing
 
 ## **🛠️ System Requirements**
 
