@@ -16,7 +16,7 @@ Access each virtual machine from this Google Drive folder: https://drive.google.
 
 To successfully run the complete virtual test environment, the following resources are needed:
 
-You need at least **16 GBs of RAM** and **200 GBs of free storage** to run all four virtual machines.
+You need at least **16 GBs of RAM** and **at least 200 GBs of free storage** to run all four virtual machines.
 
 ## **🚀 Getting Started**
 
